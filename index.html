@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pl">
+<head>
+   <meta charset="utf-8">
+   <title>OpenSongController</title>
+   <meta name="Author" content="Gorka Mateusz">
+   <link rel="Short icon" href=""/>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="Stylesheet" type="text/css" href="css/main.css"/>
+</head>
+<body>
+
+    <div id="main">
+        <div id="slides-preview">
+            <!-- TODO previe -->
+        </div>
+        <div id="slides-con"></div>
+    </div>
+
+    <div id="butt-panel">
+        <div id="ext-panel" style="display:none">
+            <div class="b-list butt-freeze">
+                <img src="img/freeze.svg">
+                <a>Zamroź ekran</a>
+            </div>
+            <div class="b-list butt-logo">
+                <img src="img/logo.svg">
+                <a>Wyświetl logo</a>
+            </div>
+            <div class="b-list butt-background">
+                <img src="img/background.svg">
+                <a>Wyświetl tło</a>
+            </div>
+            <div class="b-list butt-black">
+                <img src="img/black.svg">
+                <a>Czarny ekran</a>
+            </div>
+            <div class="b-list butt-white">
+                <img src="img/white.svg">
+                <a>Biały ekran</a>
+            </div>
+        </div>
+
+        <div class="ver-panel">
+            <a id="mode"></a>
+        </div>
+
+        <div class="ver-panel">
+            <div class="button butt-logo"><img src="img/logo.svg"/></div>
+            <div class="button butt-background"><img src="img/background.svg"/></div>
+            <div class="button b-ext" id="butt-ext"><a>Wyswietl więcej...</a></div>
+        </div>
+
+        <div class="ver-panel">
+            <div class="button b-big" id="butt-prev"><img src="img/prev.svg"/></div>
+            <div class="button b-mid butt-freeze"><img src="img/freeze.svg"/></div>
+            <div class="button b-big" id="butt-next"><img src="img/next.svg"/></div>
+        </div>
+
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

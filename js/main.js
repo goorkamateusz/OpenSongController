@@ -1,7 +1,18 @@
+//! Aplication config
+
+/// IP adress of OpenSong computer
+var IP_COMP = '192.168.1.104:8082'
+
 ///! Interface
 $(document).ready(function(){
 
-    $currentSlide = undefined
+    $currentSlide = undefined //< current slide in jq
+
+    /** Show communicat about error. */
+    function err_display(t){
+        $('#error').html("ERROR<br/>"+t)
+        $('#welcome').fadeIn(1000)
+    }
 
     /** Select a current slide on list.
      * \param[in] $listCon - jQuery object of #slides-con
@@ -9,7 +20,7 @@ $(document).ready(function(){
      */
     function update_current( $listCon = $('#slides-con'), ffinish = function(){} ){
         $.get(
-            IP_COMP+"/presentation/status",
+            "http://"+IP_COMP+"/presentation/status",
             function( data, status, xhr ){
                 if( status == "success" ){
                     $xml = $($.parseXML(xhr.responseText) )
@@ -48,8 +59,12 @@ $(document).ready(function(){
                     // On finish
                     ffinish()
                 }
+                else {
+                    console.error( data, status, xhr )
+                    err_display("Błąd komunikacji")
+                }
             }
-        )
+        ).fail(function(){ err_display("Błąd komunikacji") })
     }
 
     /** Move by vect slide.
@@ -58,13 +73,13 @@ $(document).ready(function(){
     function move_slide( vect ){
         $moved = $('#slide'+(Number($('.current').find('i').text())+vect))
         $moved.addClass('moved')
-        update_current( $('#slides-con'), function(){ $moved.removeClass('moved') })
+        return update_current( $('#slides-con'), function(){ $moved.removeClass('moved') })
     }
 
     /** Update list of slides. */
     function update_list(){
         $.get(
-            IP_COMP+"/presentation/slide/list",
+            "http://"+IP_COMP+"/presentation/slide/list",
             function( data, status, xhr ){
     
                 if( status == "success" ){
@@ -74,87 +89,97 @@ $(document).ready(function(){
     
                     $xml.find('response').children().each(function(){
                         $row = $('<li></li>')
-    
+
                         $row.attr("id","slide"+$(this).attr('identifier'))
                         $row.append( "<i>"+$(this).attr('identifier')+"</i>" )
                         $row.append( "<b>"+$(this).attr('name')+"</b>" )
-    
+
                         type = $(this).attr('type')
                         $row.addClass( type )
                         $row.append( "<a>"+type+"</a>" )
-    
+
                         $listCon.append( $row )
                     })
-    
-                    update_current( $listCon )
+
+                    update_current( $listCon );
                 }
                 else {
-                    console.log( xhr )
-                    console.log( status )
-                    console.log( data )
-                    //todo error
+                    console.error( data, status, xhr )
+                    err_display("Błąd komunikacji")
                 }
             }
-        )
+        ).fail(function(){ err_display("Błąd komunikacji!") })
     }
 
-    /// Loading of slides list
+    /// Default loading list of slides
     update_list()
+
+    ////------------------------------------
+    /// Welcome panel
+    $('#ip-address').val( IP_COMP )
+
+    /// Butt - Welcome
+    $('#butt-welcome').click(function(){
+        IP_COMP = $('#ip-address').val()
+
+        update_list()
+        $('#welcome').fadeOut('fast')
+    })
 
     ////------------------------------------
     $('#slides-con').click(function(){ update_list(); update_current(); })
 
     ////------------------------------------
-    ///
+    /// Butt - Extendent panel
     $('#butt-ext').click(function(){
         $('#ext-panel').toggle()
     })
 
     /// Butt - next
     $('#butt-next').click(function(){
-        $.post( IP_COMP+"/presentation/slide/next" )
+        $.post( "http://"+IP_COMP+"/presentation/slide/next" )
         move_slide(1)
     })
 
     /// Butt - previous
     $('#butt-prev').click(function(){
-        $.post( IP_COMP+"/presentation/slide/previous" )
+        $.post( "http://"+IP_COMP+"/presentation/slide/previous" )
         move_slide(-1)
     })
 
     /// Butt - normal mode
     $('.butt-normal').click(function(){
-        $.post( IP_COMP+"/presentation/screen/normal" )
+        $.post( "http://"+IP_COMP+"/presentation/screen/normal" )
         update_current()
     })
 
     /// Butt - freez mode
     $('.butt-freeze').click(function(){
-        $.post( IP_COMP+"/presentation/screen/freeze" )
+        $.post( "http://"+IP_COMP+"/presentation/screen/freeze" )
         update_current()
     })
 
     /// Butt - black mode
     $('.butt-black').click(function(){
-        $.post( IP_COMP+"/presentation/screen/black" )
+        $.post( "http://"+IP_COMP+"/presentation/screen/black" )
         update_current()
     })
 
     /// Butt - white mode
     $('.butt-white').click(function(){
-        $.post( IP_COMP+"/presentation/screen/white" )
+        $.post( "http://"+IP_COMP+"/presentation/screen/white" )
         update_current()
     })
 
     /// Butt - background mode
     $('.butt-background').click(function(){
-        $.post( IP_COMP+"/presentation/screen/hide" )
+        $.post( "http://"+IP_COMP+"/presentation/screen/hide" )
         update_current()
     })
 
     /// Butt - logo mode
     $('.butt-logo').click(function(){
-        $.post( IP_COMP+"/presentation/screen/logo" )
+        $.post( "http://"+IP_COMP+"/presentation/screen/logo" )
         update_current()
     })
 

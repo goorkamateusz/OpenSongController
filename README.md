@@ -16,19 +16,19 @@
 - [Wyjątki](#Wyjątki)
 
 ## Konfiguracja
-**Obowiązkowo trzeba skonfigurować adres IP komputera na którym jest uruchomiony program Open Song, oraz port wykorzystywane przez Open Song!**
+Dla wygody trzeba skonfigurować **domyślny adres IP komputera** na którym jest uruchomiony program Open Song, oraz port wykorzystywane przez Open Song!
 
 Na poczatku pliku `config.js`, należy odpowiednio nadpisać zmienną `IP_COMP`.
 np.
 
-    const IP_COMP = 'http://192.168.1.104:8082'
+    var IP_COMP = 'http://192.168.1.104:8082'
 
 ## Wykrzystanie
 Aplikację można otworzyć niemal w każdej przeglądarce sieciowej, nie wymaga komunikacji z serwerem.
 
 Polecamy trzy sposoby wykorzystania:
 - Zapisanie aplikacji na urządzeniu i otwieranie go lokalnie w przeglądarce;
-- Uruchomienie wirtualnego serwera na komputerze w sieci lokalnej;
+- Uruchomienie wirtualnego serwera na komputerze w sieci lokalnej (stałe IP komputera);
 - Umieszczenie aplikacji na serwerze zdalnym służącym jedynie jako magazyn kodu;
 
 ____
@@ -41,6 +41,7 @@ ____
 (...)
 
 ## Funkcjonalności
+- panel powitania z możliwością konfiguracji adresu ip
 - nawigacja prezentacją, nastepny, poprzedni
 - wyświetanie listy slajdów
 - czarny ekran, biały ekran, zamrożony ekran
@@ -54,6 +55,8 @@ etap 1:
 - [ ] wbudowany komunikat
 - [ ] własne komunikaty
 - wyswietlanie trybu w jakim sie znajduje
+
+- [ ] panel do konfiguracji IP
 
 etap 2:
 - [ ] Uruchamienie zestawu

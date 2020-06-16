@@ -37,29 +37,21 @@ ____
 - Aplikacja wykorzystuje API programu Open Song.
 - Wykorzystuje bibliotekę jQuery.
 
-## Zawartość
-(...)
-
 ## Funkcjonalności
 - panel powitania z możliwością konfiguracji adresu ip
 - nawigacja prezentacją, nastepny, poprzedni
 - wyświetanie listy slajdów
 - czarny ekran, biały ekran, zamrożony ekran
 - przyciski wyswietl tlo, wyswietl logo
+- wyswietlana tryb w jakim sie znajduje
 
-## Wyjątki
-(...)
-
+___
 ## TODO
-etap 1:
-- [ ] wbudowany komunikat
-- [ ] własne komunikaty
-- wyswietlanie trybu w jakim sie znajduje
-
-- [ ] panel do konfiguracji IP
-
-etap 2:
 - [ ] Uruchamienie zestawu
 - [ ] wyswietlanie podglądu
 
 - [ ] Po polsku i po angielsku
+
+## IDEA
+- [ ] wbudowany komunikat
+- [ ] własne komunikaty

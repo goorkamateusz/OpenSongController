@@ -19,7 +19,6 @@ p, a, div, li, b, i {
 #main {
     position:absolute;
     top:0;
-    bottom:0;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -30,9 +29,10 @@ p, a, div, li, b, i {
 }
 
 #slides-con {
+    position:relative;
     min-width:85%;
     max-width:100%;
-    padding:0px 0px 160px 0px;
+    padding:60px 0px 160px 0px;
 }
 #slides-con li {
     width:100%;
@@ -170,6 +170,8 @@ p, a, div, li, b, i {
 }
 .b-list img {
     margin:3px;
+    width:30px;
+    height:30px;
 }
 .b-list a {
     margin-left:5px;
@@ -180,7 +182,8 @@ p, a, div, li, b, i {
 
 /* welcome ---------------- */
 #welcome {
-    position:absolute;
+    position:fixed;
+    bottom:0;
     top:0;
     left:0;
     right:0;

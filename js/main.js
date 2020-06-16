@@ -137,50 +137,51 @@ $(document).ready(function(){
 
     /// Butt - next
     $('#butt-next').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/slide/next" )
-        move_slide(1)
+        $.post( "http://"+IP_COMP+"/presentation/slide/next",
+                function(){ move_slide(1) } )
     })
 
     /// Butt - previous
     $('#butt-prev').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/slide/previous" )
-        move_slide(-1)
+        $.post( "http://"+IP_COMP+"/presentation/slide/previous",
+                function(){ move_slide(-1) } )
+
     })
 
     /// Butt - normal mode
     $('.butt-normal').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/normal" )
-        update_current()
+        $.post( "http://"+IP_COMP+"/presentation/screen/normal",
+                function(){ update_current() } )
     })
 
     /// Butt - freez mode
     $('.butt-freeze').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/freeze" )
-        update_current()
+        $.post( "http://"+IP_COMP+"/presentation/screen/freeze",
+                function(){ update_current() } )
     })
 
     /// Butt - black mode
     $('.butt-black').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/black" )
-        update_current()
+        $.post( "http://"+IP_COMP+"/presentation/screen/black",
+                function(){ update_current() } )
     })
 
     /// Butt - white mode
     $('.butt-white').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/white" )
-        update_current()
+        $.post( "http://"+IP_COMP+"/presentation/screen/white",
+                function(){ update_current() } )
     })
 
     /// Butt - background mode
     $('.butt-background').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/hide" )
-        update_current()
+        $.post( "http://"+IP_COMP+"/presentation/screen/hide",
+                function(){ update_current() } )
     })
 
     /// Butt - logo mode
     $('.butt-logo').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/logo" )
-        update_current()
+        $.post( "http://"+IP_COMP+"/presentation/screen/logo",
+                function(){ update_current() } )
     })
 
 })

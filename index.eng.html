@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pl">
+<html lang="eng">
 <head>
    <meta charset="utf-8">
    <title>OpenSongController</title>
@@ -9,37 +9,34 @@
 </head>
 <body>
     <div id="main">
-        <div id="slides-preview">
-            <!-- TODO preview -->
-        </div>
-        <div id="slides-con">Ładowanie...</div>
+        <div id="slides-con">Loading...</div>
     </div>
 
     <div id="butt-panel">
         <div id="ext-panel" style="display:none">
             <div class="b-list butt-normal">
                 <img src="">
-                <a>Tryb normalny</a>
+                <a>Normal mode</a>
             </div>
             <div class="b-list butt-freeze">
                 <img src="img/freeze.svg">
-                <a>Zamroź ekran</a>
+                <a>Freeze screen</a>
             </div>
             <div class="b-list butt-logo">
                 <img src="img/logo.svg">
-                <a>Wyświetl logo</a>
+                <a>Display logo</a>
             </div>
             <div class="b-list butt-background">
                 <img src="img/background.svg">
-                <a>Wyświetl tło</a>
+                <a>Hide content</a>
             </div>
             <div class="b-list butt-black">
                 <img src="img/black.svg">
-                <a>Czarny ekran</a>
+                <a>Black screen</a>
             </div>
             <div class="b-list butt-white">
                 <img src="img/white.svg">
-                <a>Biały ekran</a>
+                <a>White screen</a>
             </div>
         </div>
 
@@ -50,7 +47,7 @@
         <div class="ver-panel">
             <div class="button butt-logo"><img src="img/logo.svg"/></div>
             <div class="button butt-background"><img src="img/background.svg"/></div>
-            <div class="button b-wide b-ext" id="butt-ext"><a>Więcej opcji...</a></div>
+            <div class="button b-wide b-ext" id="butt-ext"><a>More options...</a></div>
         </div>
 
         <div class="ver-panel">
@@ -58,7 +55,6 @@
             <div class="button b-mid butt-freeze"><img src="img/freeze.svg"/></div>
             <div class="button b-big" id="butt-next"><img src="img/next.svg"/></div>
         </div>
-
     </div>
 
     <div id="welcome">
@@ -68,15 +64,15 @@
         </div>
 
         <div>
-            <a>IP adres komputera<br/>i port sieciowy programu OpenSong</a>
+            <a>IP address of computer<br/>and network port of OpenSong</a>
             <input type="text" id="ip-address"/>
         </div>
 
-        <div class="button b-wide" id="butt-welcome">Uruchom</div>
+        <div class="button b-wide" id="butt-welcome">Run</div>
 
-        <div id="error1" class="error">ERROR (1)<br/>Błąd odpowiedzi!</div>
-        <div id="error2" class="error">ERROR (2)<br/>Błąd komunikacji!</div>
-        <div id="error3" class="error">ERROR (3)<br/>Błąd komunikacji!<br/>Sprawdź IP adres!</div>
+        <div id="error1" class="error">ERROR (1)<br/>Request error!</div>
+        <div id="error2" class="error">ERROR (2)<br/>Communication error!</div>
+        <div id="error3" class="error">ERROR (3)<br/>Communication error!<br/>Check IP address</div>
 
         <div class="author">
             <a>Created by</a>

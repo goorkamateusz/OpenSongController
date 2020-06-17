@@ -1,3 +1,7 @@
+/**
+ * \brief JS file of OpenSongController
+ * \author Górka Mateusz (kzswieb.eu)
+ */
 //! Aplication config
 
 /// IP adress of OpenSong computer
@@ -6,11 +10,11 @@ var IP_COMP = '192.168.1.104:8082'
 ///! Interface
 $(document).ready(function(){
 
-    $currentSlide = undefined //< current slide in jq
+    $currentSlide = undefined //<br current slide in jq
 
     /** Show communicat about error. */
-    function err_display(t){
-        $('#error').html("ERROR<br/>"+t)
+    function err_display( err = 1 ){
+        $('#error'+err).show();
         $('#welcome').fadeIn(1000)
     }
 
@@ -61,10 +65,10 @@ $(document).ready(function(){
                 }
                 else {
                     console.error( data, status, xhr )
-                    err_display("Błąd komunikacji")
+                    err_display()
                 }
             }
-        ).fail(function(){ err_display("Błąd komunikacji") })
+        ).fail(function(){ err_display(2) })
     }
 
     /** Move by vect slide.
@@ -81,12 +85,12 @@ $(document).ready(function(){
         $.get(
             "http://"+IP_COMP+"/presentation/slide/list",
             function( data, status, xhr ){
-    
+
                 if( status == "success" ){
                     $xml = $( $.parseXML( xhr.responseText ) )
                     $listCon = $('#slides-con')
                     $listCon.empty()
-    
+
                     $xml.find('response').children().each(function(){
                         $row = $('<li></li>')
 
@@ -105,10 +109,10 @@ $(document).ready(function(){
                 }
                 else {
                     console.error( data, status, xhr )
-                    err_display("Błąd komunikacji")
+                    err_display()
                 }
             }
-        ).fail(function(){ err_display("Błąd komunikacji!") })
+        ).fail(function(){ err_display(3) })
     }
 
     /// Default loading list of slides

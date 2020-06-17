@@ -68,3 +68,9 @@ ____
 - `ERROR (1)` - Respond error - Status of respond other than `success`
 - `ERROR (2)` - Communication error - error of GET
 - `ERROR (3)` - Communication error - error of POST
+
+In all of errors:
+check a IP address and port, Open Song settings, firewall permission
+
+
+Copyright (c) 2020 Górka Mateusz

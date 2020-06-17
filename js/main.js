@@ -1,6 +1,7 @@
 /**
- * \brief JS file of OpenSongController
+ * \file JS file of OpenSongController
  * \author Górka Mateusz (kzswieb.eu)
+ * \copyright Copyright (c) 2020
  */
 //! Aplication config
 

@@ -1,4 +1,4 @@
-# OpenSongController V0.0.0
+# OpenSongController V1.0.0
 >  Aplikacja webowa pozalająca na sterowanie prezentacją programu [OpenSong](http://www.opensong.org/) w sieci lokalnej.
 
 > Web app allows you to remote controle presentation of [OpenSong](http://www.opensong.org/) in local network.\
@@ -71,12 +71,17 @@ ____
 - `ERROR (2)` - Błąd komunikacji - błąd GET
 - `ERROR (3)` - Błąd komunikacji - błąd POST
 
+W przypadku każdego z błędów należy sprawdzić:
+ustawienia OpenSonga, poprawność IP i portu, uprawnienia firewall'a dla OpenSonga,
+
 ___
 ## TODO
 - [ ] Uruchamienie zestawu
 - [ ] Wyświetlanie podglądu
-- [ ] Po polsku i po angielsku
 
 ## IDEA
 - [ ] wbudowany komunikat
 - [ ] własne komunikaty
+
+
+Copyright (c) 2020 Górka Mateusz

@@ -6,7 +6,7 @@
 //! Aplication config
 
 /// IP adress of OpenSong computer
-var IP_COMP = '192.168.1.104:8082'
+var IP_COMP = '192.168.1.200:8080'
 
 ///! Interface
 $(document).ready(function(){

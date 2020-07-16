@@ -6,7 +6,7 @@
 
 ## Autor
 >   **Górka Mateusz**\
->   [kzswieb.eu](kzswieb.eu)\
+>   [kzswieb.eu](http://kzswieb.eu)\
 >   maatiug@gmail.com
 
 **Daj mi znać jeśli używasz tej aplikacji! ;)**
@@ -34,7 +34,7 @@
 
     1. Pobierz kod i otwórz lokalnie na urządzeniu;
     2. Otwórz aplikację z serwerze www, np.
-        [kzswieb.eu/_app/controller](kzswieb.eu/_app/controller)
+        [kzswieb.eu/_app/controller](http://app.kzswieb.eu/controller)
 
 - Przed uruchomieniem należy włączyć API w OpenSong'u:
 

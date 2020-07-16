@@ -4,7 +4,7 @@
 
 ## Author
 >   **Górka Mateusz**\
->   [kzswieb.eu](kzswieb.eu)\
+>   [kzswieb.eu](http://kzswieb.eu)\
 >   maatiug@gmail.com
 
 **Give me feedback if you use that app! ;)**
@@ -32,7 +32,7 @@
 
     1. Download a code and open local in browser
     2. Open app form a server www, ex.
-        [kzswieb.eu/_app/controller](kzswieb.eu/_app/controller)
+        [kzswieb.eu/_app/controller](http://app.kzswieb.eu/controller/index.eng.html)
 
 - Befor start you have tou turn on an API in OpenSong:
 

@@ -1,29 +1,32 @@
-# OpenSongController V1.0.0
->  Aplikacja webowa pozalająca na sterowanie prezentacją programu [OpenSong](http://www.opensong.org/) w sieci lokalnej.
+# Open Song JavaScript Controller
+Aplikacja webowa pozalająca na sterowanie prezentacją programu [OpenSong](http://www.opensong.org/) w sieci lokalnej.
 
-> Web app allows you to remote controle presentation of [OpenSong](http://www.opensong.org/) in local network.\
-> **[English version of README (here)](README.eng.md)**
+Web app allows you to remote control presentation of [OpenSong](http://www.opensong.org/) in local network.\
+**[English version of README (here)](README.eng.md)**
 
 ## Autor
->   **Górka Mateusz**\
->   [kzswieb.eu](http://kzswieb.eu)\
->   maatiug@gmail.com
+> **Górka Mateusz**\
+> [kzswieb.eu](http://kzswieb.eu)
 
 **Daj mi znać jeśli używasz tej aplikacji! ;)**
 
 ## Spis treści
-- [Autor](#Autor)
-- [Funkcjonalności](#Funkcjonalności)
-- [Konfiguracja](Konfiguracja)
-- [Uruchomienie](#Uruchomienie)
-- [Zawartość](#Zawartość)
-- [Specyfikacja](#Specyfikacja)
-- [Wyjątki](#Wyjątki)
+- [Open Song JavaScript Controller](#open-song-javascript-controller)
+  - [Autor](#autor)
+  - [Spis treści](#spis-treści)
+  - [Funkcjonalności](#funkcjonalności)
+  - [Uruchomienie](#uruchomienie)
+  - [Konfiguracja](#konfiguracja)
+  - [Zawartość](#zawartość)
+  - [Specyfikacja](#specyfikacja)
+  - [Wyjątki](#wyjątki)
+  - [TODO](#todo)
+  - [IDEA](#idea)
 
 ## Funkcjonalności
 - Panel powitania z możliwością konfiguracji adresu ip;
-- Wyświetanie listy slajdów;
-- Nawigacja w prezentacji: nastepny, poprzedni slajd;
+- Wyświetlanie listy slajdów;
+- Nawigacja w prezentacji: następny, poprzedni slajd;
 - Włączenie trybów: Czarny ekran, biały ekran, zamrożony ekran, wyświetl tlo, wyświetl logo;
 - Wyświetla tryb w jakim znajduje się program;
 
@@ -56,7 +59,7 @@ Warto skonfigurować domyślny adres IP komputera,
 
 ____
 ## Specyfikacja
-> Aplikacja webowa w JS, HTML, CSS
+- Aplikacja webowa w JS, HTML, CSS
 - Wykorzystuje **API** programu Open Song.
 - Wykorzystuje bibliotekę jQuery.
 - Testy w przeglądarkach:
@@ -76,12 +79,13 @@ ustawienia OpenSonga, poprawność IP i portu, uprawnienia firewall'a dla OpenSo
 
 ___
 ## TODO
-- [ ] Uruchamienie zestawu
+- [ ] Uruchamianie zestawu
 - [ ] Wyświetlanie podglądu
+- [ ] Zapisywanie IP w cookie lub local storage
 
 ## IDEA
 - [ ] wbudowany komunikat
 - [ ] własne komunikaty
 
-
+__
 Copyright (c) 2020 Górka Mateusz

@@ -1,40 +1,41 @@
-# OpenSongController V0.0.0
-> Web app allows you to remote controle presentation of [OpenSong](http://www.opensong.org/) in local network.\
-> [**Polska wersja dokumentacji README.md**](README.md)
+# Open Song JavaScript Controller
+Web app allows you to remote control a presentation of the [OpenSong](http://www.opensong.org/) software in the local network.\
+[**Polska wersja dokumentacji README.md**](README.md)
 
 ## Author
->   **Górka Mateusz**\
->   [kzswieb.eu](http://kzswieb.eu)\
->   maatiug@gmail.com
+> **Górka Mateusz**\
+> [kzswieb.eu](http://kzswieb.eu)
 
 **Give me feedback if you use that app! ;)**
 
 ## Contents
-- [Author](#Author)
-- [Features](#Features)
-- [Configuration](#Configuration)
-- [Start-Up](#Start-Up)
-- [Content](#Content)
-- [Specification](#Specification)
-- [Exceptions](#Exceptions)
+- [Open Song JavaScript Controller](#open-song-javascript-controller)
+  - [Author](#author)
+  - [Contents](#contents)
+  - [Features](#features)
+  - [Start-Up](#start-up)
+  - [Configuration](#configuration)
+  - [Content](#content)
+  - [Specification](#specification)
+  - [Exceptions](#exceptions)
 
 ## Features
-- Welcome panel with ip address configuration;
-- Display a list of slides;
-- Presentation navigation: next, previous slide
-- Use modes: black screen, white screen, freeze screen, hide and logo;
-- Show a current mode;
+- Welcome panel with the ip address of OpenSong instance configuration;
+- Displaying a list of slides;
+- The presentation navigation: next, previous slide buttons;
+- The use modes: black screen, white screen, freeze screen, hide and logo mode;
+- Showing a current mode in OpenSong;
 
 ## Start-Up
-- You can run application just in browser;
-- It's worth it to set static ip address on your router.
-- Ways to run application:
+- You can run application just in the browser;
+- It's worth it to set static ip address on your router for computer with the Open Song.
+- Ways to run the application:
 
-    1. Download a code and open local in browser
-    2. Open app form a server www, ex.
-        [kzswieb.eu/_app/controller](http://app.kzswieb.eu/controller/index.eng.html)
+    1. Download the code and open locally in your browser;
+    2. Open the app form the www server, for example here:
+        [OpenSongController Online](https://goorkamateusz.github.io/OpenSongController/index.eng.html)
 
-- Befor start you have tou turn on an API in OpenSong:
+- Before start you have to turn on an API in the OpenSong:
 
     Settings > Program Settings > System > `Automation API`:
     - [x] Select checkbox,
@@ -42,21 +43,21 @@
 
 - IP address you can check in command window, by command `ipconfig` (Windows) or `ifconfig` (Linux);
 
-## Configuratio
-It's worth to configure a default IP address of computer.
-To do that you have to change declaration of variable `IP_COMP` on the begining of `js/main.js` file.
+## Configuration
+It's worth to configure a default IP address of your computer.
+To do that you have to change declaration of variable `IP_COMP` on the beginning of `js/main.js` file (if you use your own instance of OpenSong)
 
     var IP_COMP = '192.168.1.104:8082'
 
 ## Content
-- `index.html` - Polish version of app
-- `index.eng.html` - English version of app
+- `index.html` - Polish version of the app;
+- `index.eng.html` - English version of the app;
 
 ____
 ## Specification
-> Web app in JS, HTML, CSS
-- App use a **API** of Open Song;
-- App use a jQuery library;
+- Web app in JS, HTML, CSS
+- API of Open Song software;
+- jQuery library;
 - Tests in browsers:
     - No found errors:
         - android: chrome, firefox
@@ -70,7 +71,7 @@ ____
 - `ERROR (3)` - Communication error - error of POST
 
 In all of errors:
-check a IP address and port, Open Song settings, firewall permission
+check a IP address and port, the Open Song settings, the firewall permission.
 
 
 Copyright (c) 2020 Górka Mateusz

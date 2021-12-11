@@ -1,8 +1,23 @@
 /// Default IP address of OpenSong computer
-const DEFAULT_IP_ADDRESS = '192.168.8.113:8080'
+const DEFAULT_IP_ADDRESS = '192.168.1.100:8080'
 
 class APIProvider {
-    ip_address: string = DEFAULT_IP_ADDRESS
+    static IP_ADDRESS_KEY = "ip_address"
+
+    _ip_address: string
+
+    public get ip_address() {
+        return this._ip_address
+    }
+
+    public set ip_address(address: string) {
+        this._ip_address = address
+        localStorage.setItem(APIProvider.IP_ADDRESS_KEY, address)
+    }
+
+    public constructor() {
+        this._ip_address = localStorage.getItem(APIProvider.IP_ADDRESS_KEY) || DEFAULT_IP_ADDRESS
+    }
 
     public get(endpoint: string, onSuccess: any): JQuery.jqXHR<any> {
         return $.get(this.get_url(endpoint), this.success_control(onSuccess))

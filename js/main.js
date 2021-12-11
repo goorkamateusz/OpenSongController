@@ -1,8 +1,15 @@
 "use strict";
-const DEFAULT_IP_ADDRESS = '192.168.8.113:8080';
+const DEFAULT_IP_ADDRESS = '192.168.1.100:8080';
 class APIProvider {
     constructor() {
-        this.ip_address = DEFAULT_IP_ADDRESS;
+        this._ip_address = localStorage.getItem(APIProvider.IP_ADDRESS_KEY) || DEFAULT_IP_ADDRESS;
+    }
+    get ip_address() {
+        return this._ip_address;
+    }
+    set ip_address(address) {
+        this._ip_address = address;
+        localStorage.setItem(APIProvider.IP_ADDRESS_KEY, address);
     }
     get(endpoint, onSuccess) {
         return $.get(this.get_url(endpoint), this.success_control(onSuccess));
@@ -25,6 +32,7 @@ class APIProvider {
         };
     }
 }
+APIProvider.IP_ADDRESS_KEY = "ip_address";
 const Api = new APIProvider();
 const BUTTONS_CONFIGURATION = [
     {

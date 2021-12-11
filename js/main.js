@@ -25,11 +25,11 @@ $(document).ready(function () {
     });
     /// Butt - next
     $('#butt-next').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/slide/next", function () { moveSlide(1); });
+        $.post("http://" + IP_COMP + "/presentation/slide/next", function () { changeSlide(1); });
     });
     /// Butt - previous
     $('#butt-prev').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/slide/previous", function () { moveSlide(-1); });
+        $.post("http://" + IP_COMP + "/presentation/slide/previous", function () { changeSlide(-1); });
     });
     /// Butt - normal mode
     $('.butt-normal').click(function () {
@@ -56,7 +56,6 @@ $(document).ready(function () {
         $.post("http://" + IP_COMP + "/presentation/screen/logo", function () { updateStatus(); });
     });
 });
-/** Show communicat about error. */
 function displayError(err) {
     if (err === void 0) { err = 1; }
     $('#error' + err).show();
@@ -94,31 +93,16 @@ function getStatusDescription(mode) {
     }
     return "Nie znany tryb";
 }
-/** Move by vect slide.
- * \param[in] vect - number of slide, vect>0 -> move down, vect<0 -> move up
- */
-function moveSlide(vect) {
-    var $moved = $('#slide' + (Number($('.current').find('i').text()) + vect));
+function changeSlide(slideMove) {
+    var currentSlideId = Number($('.current').find('i').text());
+    var $moved = $("#slide".concat(currentSlideId + slideMove));
     $moved.addClass('moved');
     return updateStatus(function () { $moved.removeClass('moved'); });
 }
-/** Update list of slides. */
 function updateList() {
-    $.get("http://" + IP_COMP + "/presentation/slide/list", function (data, status, xhr) {
+    $.get("http://".concat(IP_COMP, "/presentation/slide/list"), function (data, status, xhr) {
         if (status == "success") {
-            var $xml = $($.parseXML(xhr.responseText));
-            var $listCon_1 = $('#slides-con');
-            $listCon_1.empty();
-            $xml.find('response').children().each(function () {
-                var $row = $('<li></li>');
-                $row.attr("id", "slide" + $(this).attr('identifier'));
-                $row.append("<i>" + $(this).attr('identifier') + "</i>");
-                $row.append("<b>" + $(this).attr('name') + "</b>");
-                var type = $(this).attr('type');
-                $row.addClass(type);
-                $row.append("<a>" + type + "</a>");
-                $listCon_1.append($row);
-            });
+            setSlidesListView(xhr);
             updateStatus();
         }
         else {
@@ -126,4 +110,25 @@ function updateList() {
             displayError();
         }
     }).fail(function () { displayError(3); });
+}
+function setSlidesListView(xhr) {
+    var $xml = $($.parseXML(xhr.responseText));
+    var $listCon = $('#slides-con');
+    $listCon.empty();
+    $xml.find('response').children().each(function () {
+        var $row = createListItem(this);
+        $listCon.append($row);
+    });
+    function createListItem(item) {
+        var identifier = $(item).attr('identifier');
+        var name = $(item).attr('name');
+        var type = $(item).attr('type');
+        var $row = $('<li></li>');
+        $row.attr("id", "slide".concat(identifier));
+        $row.addClass(type);
+        $row.append("<i>".concat(identifier, "</i>"));
+        $row.append("<b>".concat(name, "</b>"));
+        $row.append("<a>".concat(type, "</a>"));
+        return $row;
+    }
 }

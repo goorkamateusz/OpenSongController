@@ -33,13 +33,13 @@ $(document).ready(function () {
     /// Butt - next
     $('#butt-next').click(function () {
         $.post("http://" + IP_COMP + "/presentation/slide/next",
-            function () { moveSlide(1) })
+            function () { changeSlide(1) })
     })
 
     /// Butt - previous
     $('#butt-prev').click(function () {
         $.post("http://" + IP_COMP + "/presentation/slide/previous",
-            function () { moveSlide(-1) })
+            function () { changeSlide(-1) })
     })
 
     /// Butt - normal mode
@@ -79,7 +79,6 @@ $(document).ready(function () {
     })
 })
 
-/** Show communicat about error. */
 function displayError(err = 1) {
     $('#error' + err).show();
     $('#welcome').fadeIn(1000)
@@ -123,40 +122,19 @@ function getStatusDescription(mode: string): string {
     return "Nie znany tryb"
 }
 
-/** Move by vect slide.
- * \param[in] vect - number of slide, vect>0 -> move down, vect<0 -> move up
- */
-function moveSlide(vect) {
-    let $moved = $('#slide' + (Number($('.current').find('i').text()) + vect))
+function changeSlide(slideMove: number) {
+    const currentSlideId: number = Number($('.current').find('i').text())
+    const $moved = $(`#slide${currentSlideId + slideMove}`)
     $moved.addClass('moved')
     return updateStatus(() => { $moved.removeClass('moved') })
 }
 
-/** Update list of slides. */
 function updateList() {
     $.get(
-        "http://" + IP_COMP + "/presentation/slide/list",
-        function (data, status, xhr) {
-
+        `http://${IP_COMP}/presentation/slide/list`,
+        function (data, status, xhr): void {
             if (status == "success") {
-                let $xml = $($.parseXML(xhr.responseText))
-                let $listCon = $('#slides-con')
-                $listCon.empty()
-
-                $xml.find('response').children().each(function () {
-                    let $row = $('<li></li>')
-
-                    $row.attr("id", "slide" + $(this).attr('identifier'))
-                    $row.append("<i>" + $(this).attr('identifier') + "</i>")
-                    $row.append("<b>" + $(this).attr('name') + "</b>")
-
-                    let type = $(this).attr('type')
-                    $row.addClass(type)
-                    $row.append("<a>" + type + "</a>")
-
-                    $listCon.append($row)
-                })
-
+                setSlidesListView(xhr)
                 updateStatus();
             }
             else {
@@ -165,4 +143,29 @@ function updateList() {
             }
         }
     ).fail(function () { displayError(3) })
+}
+
+function setSlidesListView(xhr: JQuery.jqXHR<any>) {
+    const $xml = $($.parseXML(xhr.responseText))
+    const $listCon = $('#slides-con')
+    $listCon.empty()
+
+    $xml.find('response').children().each(function () {
+        let $row = createListItem(this)
+        $listCon.append($row)
+    })
+
+    function createListItem(item: HTMLElement): JQuery<HTMLElement> {
+        const identifier = $(item).attr('identifier')
+        const name = $(item).attr('name')
+        const type = $(item).attr('type')
+
+        let $row = $('<li></li>')
+        $row.attr("id", `slide${identifier}`)
+        $row.addClass(type)
+        $row.append(`<i>${identifier}</i>`)
+        $row.append(`<b>${name}</b>`)
+        $row.append(`<a>${type}</a>`)
+        return $row
+    }
 }

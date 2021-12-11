@@ -1,18 +1,47 @@
-//! Aplication config
-/// IP adress of OpenSong computer
-var IP_COMP = '192.168.8.113:8080'
+/// Default IP address of OpenSong computer
+const DEFAULT_IP_ADDRESS = '192.168.8.113:8080'
+
+class APIProvider {
+    ip_address: string = DEFAULT_IP_ADDRESS
+
+    public get(endpoint: string, onSuccess: any): JQuery.jqXHR<any> {
+        return $.get(this.get_url(endpoint), this.success_control(onSuccess))
+    }
+
+    public post(endpoint: string, onSuccess: any): JQuery.jqXHR<any> {
+        return $.post(this.get_url(endpoint), this.success_control(onSuccess))
+    }
+
+    private get_url(endpoint: string): string {
+        return `http://${this.ip_address}/${endpoint}`
+    }
+
+    private success_control(onSuccess: any) {
+        return (data: any, status: string, xhr: JQuery.jqXHR<any>): void => {
+            if (status == "success") {
+                onSuccess(xhr, status, data)
+            }
+            else {
+                console.error(xhr, status, data)
+                displayError()
+            }
+        }
+    }
+}
 
 interface ButtonConfig {
     selector: string,
     action: any
 }
 
-const BUTTONS: Array<ButtonConfig> = [
+const Api = new APIProvider()
+
+const BUTTONS_CONFIGURATION: Array<ButtonConfig> = [
     {
         /// Butt - Welcome
         selector: '#butt-welcome',
         action: () => {
-            IP_COMP = $('#ip-address').val() as string
+            Api.ip_address = $('#ip-address').val() as string
             updateList()
             $('#welcome').fadeOut('fast')
         }
@@ -32,95 +61,71 @@ const BUTTONS: Array<ButtonConfig> = [
     {
         /// Butt - next
         selector: '#butt-next',
-        action: () => {
-            $.post("http://" + IP_COMP + "/presentation/slide/next", () => { changeSlide(1) })
-        }
+        action: () => Api.post("presentation/slide/next", () => { changeSlide(1) })
     },
     {
         /// Butt - previous
         selector: '#butt-prev',
-        action: () => {
-            $.post("http://" + IP_COMP + "/presentation/slide/previous", () => { changeSlide(-1) })
-        }
+        action: () => Api.post("presentation/slide/previous", () => { changeSlide(-1) })
     },
     {
         /// Butt - normal mode
         selector: '.butt-normal',
-        action: () => {
-            $.post("http://" + IP_COMP + "/presentation/screen/normal", () => updateStatus())
-        }
+        action: () => Api.post("presentation/screen/normal", () => updateStatus())
     },
     {
         /// Butt - freez mode
         selector: '.butt-freeze',
-        action: () => {
-            $.post("http://" + IP_COMP + "/presentation/screen/freeze", () => updateStatus())
-        }
+        action: () => Api.post("presentation/screen/freeze", () => updateStatus())
     },
     {
         /// Butt - black mode
         selector: '.butt-black',
-        action: () => {
-            $.post("http://" + IP_COMP + "/presentation/screen/black", () => updateStatus())
-        }
+        action: () => Api.post("presentation/screen/black", () => updateStatus())
     },
     {
         /// Butt - white mode
         selector: '.butt-white',
-        action: () => {
-            $.post("http://" + IP_COMP + "/presentation/screen/white", () => updateStatus())
-        }
+        action: () => Api.post("presentation/screen/white", () => updateStatus())
     },
     {
         /// Butt - background mode
         selector: '.butt-background',
-        action: () => {
-            $.post("http://" + IP_COMP + "/presentation/screen/hide", () => updateStatus())
-        }
+        action: () => Api.post("presentation/screen/hide", () => updateStatus())
     },
     {
         /// Butt - logo mode
         selector: '.butt-logo',
-        action: () => {
-            $.post("http://" + IP_COMP + "/presentation/screen/logo", () => updateStatus())
-        }
+        action: () => Api.post("presentation/screen/logo", () => updateStatus())
     }
 ]
 
 $(document).ready(function () {
-    $('#ip-address').val(IP_COMP)
+    $('#ip-address').val(Api.ip_address)
 
-    for (const button of BUTTONS)
+    for (const button of BUTTONS_CONFIGURATION)
         $(button.selector).click(button.action)
 
     updateList()
 })
 
-function displayError(err = 1) {
-    $('#error' + err).show();
+function displayError(err_id: string = "1") {
+    $(`#error${err_id}`).show();
     $('#welcome').fadeIn(1000)
 }
 
 function updateStatus(onSuccess = () => { }) {
-    $.get(
-        `http://${IP_COMP}/presentation/status`,
-        (data, status, xhr) => {
-            if (status == "success") {
-                setStatusView(xhr)
-                onSuccess()
-            }
-            else {
-                console.error(data, status, xhr)
-                displayError()
-            }
-        }
-    ).fail(() => { displayError(2) })
+    Api.get('presentation/status', (data: any, status: string, xhr: JQuery.jqXHR<any>) => {
+        setStatusView(xhr)
+        onSuccess()
+    }
+    ).fail(() => { displayError("2") })
 }
 
 function setStatusView(xhr: JQuery.jqXHR<any>): void {
     const $xml = $($.parseXML(xhr.responseText))
     const itemNumber = $xml.find('slide').attr('itemnumber')
-    const mode = $xml.find('screen').attr('mode')
+    const mode = $xml.find('screen').attr('mode') as string
 
     $('.current').removeClass('current')
     $('#slides-con').find("#slide" + itemNumber).addClass('current')
@@ -147,19 +152,11 @@ function changeSlide(slideMove: number) {
 }
 
 function updateList() {
-    $.get(
-        `http://${IP_COMP}/presentation/slide/list`,
-        (data, status, xhr) => {
-            if (status == "success") {
-                setSlidesListView(xhr)
-                updateStatus()
-            }
-            else {
-                console.error(data, status, xhr)
-                displayError()
-            }
-        }
-    ).fail(function () { displayError(3) })
+    Api.get('presentation/slide/list', (data: any, status: string, xhr: JQuery.jqXHR<any>) => {
+        setSlidesListView(xhr)
+        updateStatus()
+    }
+    ).fail(() => { displayError("3") })
 }
 
 function setSlidesListView(xhr: JQuery.jqXHR<any>) {
@@ -172,17 +169,17 @@ function setSlidesListView(xhr: JQuery.jqXHR<any>) {
         $listCon.append($row)
     })
 
-    function createListItem(item: HTMLElement): JQuery<HTMLElement> {
-        const identifier = $(item).attr('identifier')
-        const name = $(item).attr('name')
-        const type = $(item).attr('type')
+    function createListItem(slide: HTMLElement): JQuery<HTMLElement> {
+        const identifier = $(slide).attr('identifier')
+        const name = $(slide).attr('name')
+        const type = $(slide).attr('type') as string
 
-        let $row = $('<li></li>')
-        $row.attr("id", `slide${identifier}`)
-        $row.addClass(type)
-        $row.append(`<i>${identifier}</i>`)
-        $row.append(`<b>${name}</b>`)
-        $row.append(`<a>${type}</a>`)
-        return $row
+        let $item = $('<li></li>')
+        $item.attr("id", `slide${identifier}`)
+        $item.addClass(type)
+        $item.append(`<i>${identifier}</i>`)
+        $item.append(`<b>${name}</b>`)
+        $item.append(`<a>${type}</a>`)
+        return $item
     }
 }

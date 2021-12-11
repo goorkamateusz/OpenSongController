@@ -1,5 +1,15 @@
 {
     "compilerOptions": {
-        "outDir": "js"
-    }
+        "outDir": "js",
+        "target": "ES2015",
+        "module": "commonjs",
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "display": "Recommended"
 }

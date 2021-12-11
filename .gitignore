@@ -11,3 +11,4 @@ linecounter.*
 
 # Node modules
 /node_modules
+*.map

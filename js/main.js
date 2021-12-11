@@ -1,115 +1,104 @@
-//! Aplication config
-/// IP adress of OpenSong computer
-var IP_COMP = '192.168.8.113:8080';
-var BUTTONS = [
+"use strict";
+const DEFAULT_IP_ADDRESS = '192.168.8.113:8080';
+class APIProvider {
+    constructor() {
+        this.ip_address = DEFAULT_IP_ADDRESS;
+    }
+    get(endpoint, onSuccess) {
+        return $.get(this.get_url(endpoint), this.success_control(onSuccess));
+    }
+    post(endpoint, onSuccess) {
+        return $.post(this.get_url(endpoint), this.success_control(onSuccess));
+    }
+    get_url(endpoint) {
+        return `http://${this.ip_address}/${endpoint}`;
+    }
+    success_control(onSuccess) {
+        return (data, status, xhr) => {
+            if (status == "success") {
+                onSuccess(xhr, status, data);
+            }
+            else {
+                console.error(xhr, status, data);
+                displayError();
+            }
+        };
+    }
+}
+const Api = new APIProvider();
+const BUTTONS_CONFIGURATION = [
     {
-        /// Butt - Welcome
         selector: '#butt-welcome',
-        action: function () {
-            IP_COMP = $('#ip-address').val();
+        action: () => {
+            Api.ip_address = $('#ip-address').val();
             updateList();
             $('#welcome').fadeOut('fast');
         }
     },
     {
         selector: '#slides-con',
-        action: function () {
+        action: () => {
             updateList();
             updateStatus();
         }
     },
     {
-        /// Butt - Extendent panel
         selector: '#butt-ext',
-        action: function () { $('#ext-panel').toggle(); }
+        action: () => { $('#ext-panel').toggle(); }
     },
     {
-        /// Butt - next
         selector: '#butt-next',
-        action: function () {
-            $.post("http://" + IP_COMP + "/presentation/slide/next", function () { changeSlide(1); });
-        }
+        action: () => Api.post("presentation/slide/next", () => { changeSlide(1); })
     },
     {
-        /// Butt - previous
         selector: '#butt-prev',
-        action: function () {
-            $.post("http://" + IP_COMP + "/presentation/slide/previous", function () { changeSlide(-1); });
-        }
+        action: () => Api.post("presentation/slide/previous", () => { changeSlide(-1); })
     },
     {
-        /// Butt - normal mode
         selector: '.butt-normal',
-        action: function () {
-            $.post("http://" + IP_COMP + "/presentation/screen/normal", function () { return updateStatus(); });
-        }
+        action: () => Api.post("presentation/screen/normal", () => updateStatus())
     },
     {
-        /// Butt - freez mode
         selector: '.butt-freeze',
-        action: function () {
-            $.post("http://" + IP_COMP + "/presentation/screen/freeze", function () { return updateStatus(); });
-        }
+        action: () => Api.post("presentation/screen/freeze", () => updateStatus())
     },
     {
-        /// Butt - black mode
         selector: '.butt-black',
-        action: function () {
-            $.post("http://" + IP_COMP + "/presentation/screen/black", function () { return updateStatus(); });
-        }
+        action: () => Api.post("presentation/screen/black", () => updateStatus())
     },
     {
-        /// Butt - white mode
         selector: '.butt-white',
-        action: function () {
-            $.post("http://" + IP_COMP + "/presentation/screen/white", function () { return updateStatus(); });
-        }
+        action: () => Api.post("presentation/screen/white", () => updateStatus())
     },
     {
-        /// Butt - background mode
         selector: '.butt-background',
-        action: function () {
-            $.post("http://" + IP_COMP + "/presentation/screen/hide", function () { return updateStatus(); });
-        }
+        action: () => Api.post("presentation/screen/hide", () => updateStatus())
     },
     {
-        /// Butt - logo mode
         selector: '.butt-logo',
-        action: function () {
-            $.post("http://" + IP_COMP + "/presentation/screen/logo", function () { return updateStatus(); });
-        }
+        action: () => Api.post("presentation/screen/logo", () => updateStatus())
     }
 ];
 $(document).ready(function () {
-    $('#ip-address').val(IP_COMP);
-    for (var _i = 0, BUTTONS_1 = BUTTONS; _i < BUTTONS_1.length; _i++) {
-        var button = BUTTONS_1[_i];
+    $('#ip-address').val(Api.ip_address);
+    for (const button of BUTTONS_CONFIGURATION)
         $(button.selector).click(button.action);
-    }
     updateList();
 });
-function displayError(err) {
-    if (err === void 0) { err = 1; }
-    $('#error' + err).show();
+function displayError(err_id = "1") {
+    $(`#error${err_id}`).show();
     $('#welcome').fadeIn(1000);
 }
-function updateStatus(onSuccess) {
-    if (onSuccess === void 0) { onSuccess = function () { }; }
-    $.get("http://".concat(IP_COMP, "/presentation/status"), function (data, status, xhr) {
-        if (status == "success") {
-            setStatusView(xhr);
-            onSuccess();
-        }
-        else {
-            console.error(data, status, xhr);
-            displayError();
-        }
-    }).fail(function () { displayError(2); });
+function updateStatus(onSuccess = () => { }) {
+    Api.get('presentation/status', (data, status, xhr) => {
+        setStatusView(xhr);
+        onSuccess();
+    }).fail(() => { displayError("2"); });
 }
 function setStatusView(xhr) {
-    var $xml = $($.parseXML(xhr.responseText));
-    var itemNumber = $xml.find('slide').attr('itemnumber');
-    var mode = $xml.find('screen').attr('mode');
+    const $xml = $($.parseXML(xhr.responseText));
+    const itemNumber = $xml.find('slide').attr('itemnumber');
+    const mode = $xml.find('screen').attr('mode');
     $('.current').removeClass('current');
     $('#slides-con').find("#slide" + itemNumber).addClass('current');
     $('#mode').text(getStatusDescription(mode));
@@ -126,41 +115,36 @@ function getStatusDescription(mode) {
     return "Nie znany tryb";
 }
 function changeSlide(slideMove) {
-    var currentSlideId = Number($('.current').find('i').text());
-    var $moved = $("#slide".concat(currentSlideId + slideMove));
+    const currentSlideId = Number($('.current').find('i').text());
+    const $moved = $(`#slide${currentSlideId + slideMove}`);
     $moved.addClass('moved');
-    return updateStatus(function () { $moved.removeClass('moved'); });
+    return updateStatus(() => { $moved.removeClass('moved'); });
 }
 function updateList() {
-    $.get("http://".concat(IP_COMP, "/presentation/slide/list"), function (data, status, xhr) {
-        if (status == "success") {
-            setSlidesListView(xhr);
-            updateStatus();
-        }
-        else {
-            console.error(data, status, xhr);
-            displayError();
-        }
-    }).fail(function () { displayError(3); });
+    Api.get('presentation/slide/list', (data, status, xhr) => {
+        setSlidesListView(xhr);
+        updateStatus();
+    }).fail(() => { displayError("3"); });
 }
 function setSlidesListView(xhr) {
-    var $xml = $($.parseXML(xhr.responseText));
-    var $listCon = $('#slides-con');
+    const $xml = $($.parseXML(xhr.responseText));
+    const $listCon = $('#slides-con');
     $listCon.empty();
     $xml.find('response').children().each(function () {
-        var $row = createListItem(this);
+        let $row = createListItem(this);
         $listCon.append($row);
     });
-    function createListItem(item) {
-        var identifier = $(item).attr('identifier');
-        var name = $(item).attr('name');
-        var type = $(item).attr('type');
-        var $row = $('<li></li>');
-        $row.attr("id", "slide".concat(identifier));
-        $row.addClass(type);
-        $row.append("<i>".concat(identifier, "</i>"));
-        $row.append("<b>".concat(name, "</b>"));
-        $row.append("<a>".concat(type, "</a>"));
-        return $row;
+    function createListItem(slide) {
+        const identifier = $(slide).attr('identifier');
+        const name = $(slide).attr('name');
+        const type = $(slide).attr('type');
+        let $item = $('<li></li>');
+        $item.attr("id", `slide${identifier}`);
+        $item.addClass(type);
+        $item.append(`<i>${identifier}</i>`);
+        $item.append(`<b>${name}</b>`);
+        $item.append(`<a>${type}</a>`);
+        return $item;
     }
 }
+//# sourceMappingURL=main.js.map

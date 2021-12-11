@@ -1,21 +1,13 @@
-# Git ignore - JS/HTML/CSS - Mateusz Gorka
-
 # Pliki srodowiska
 linecounter.*
 *.code-workspace
 
-# Dokumentacja
-*/doc/*.dia
-
-# Inne pliki
-*.zip
-*~
-
 # Tymczasowe i lokalne
+*~
+*.zip
 **/_tmp*
 **/_local*
 *.lnk
 
-# Listy danych i wyjsca
-g
-# Pliki z poufnymi danymi
+# Node modules
+/node_modules

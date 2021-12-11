@@ -4,189 +4,147 @@
  * \copyright Copyright (c) 2020
  */
 //! Aplication config
-
 /// IP adress of OpenSong computer
-var IP_COMP = '192.168.1.200:8080'
-
+var IP_COMP = '192.168.8.113:8080';
 ///! Interface
-$(document).ready(function(){
-
-    $currentSlide = undefined //<br current slide in jq
-
+$(document).ready(function () {
+    var $currentSlide = undefined; //<br current slide in jq
     /** Show communicat about error. */
-    function err_display( err = 1 ){
-        $('#error'+err).show();
-        $('#welcome').fadeIn(1000)
+    function err_display(err) {
+        if (err === void 0) { err = 1; }
+        $('#error' + err).show();
+        $('#welcome').fadeIn(1000);
     }
-
     /** Select a current slide on list.
      * \param[in] $listCon - jQuery object of #slides-con
      * \param[in] ffinish - function to do after select.
      */
-    function update_current( $listCon = $('#slides-con'), ffinish = function(){} ){
-        $.get(
-            "http://"+IP_COMP+"/presentation/status",
-            function( data, status, xhr ){
-                if( status == "success" ){
-                    $xml = $($.parseXML(xhr.responseText) )
-
-                    // Current slide
-                    if( $currentSlide ) $currentSlide.removeClass('current')
-                    $currentSlide = $listCon.find("#slide"+$xml.find('slide').attr('itemnumber'))
-                    $currentSlide.addClass('current')
-
-                    // On mode
-                    var mode = $xml.find('screen').attr('mode')
-                    switch( mode ){
+    function update_current($listCon, ffinish) {
+        if ($listCon === void 0) { $listCon = $('#slides-con'); }
+        if (ffinish === void 0) { ffinish = function () { }; }
+        $.get("http://" + IP_COMP + "/presentation/status", function (data, status, xhr) {
+            if (status == "success") {
+                var $xml = $($.parseXML(xhr.responseText));
+                // Current slide
+                if ($currentSlide)
+                    $currentSlide.removeClass('current');
+                $currentSlide = $listCon.find("#slide" + $xml.find('slide').attr('itemnumber'));
+                $currentSlide.addClass('current');
+                // On mode
+                var mode = $xml.find('screen').attr('mode');
+                switch (mode) {
                     case 'N':
-                        $('#mode').text("")
+                        $('#mode').text("");
                         break;
                     case 'F':
-                        $('#mode').text("Zamrożony ekran")
+                        $('#mode').text("Zamrożony ekran");
                         break;
                     case 'L':
-                        $('#mode').text("Wyświetla logo")
+                        $('#mode').text("Wyświetla logo");
                         break;
                     case 'H':
-                        $('#mode').text("Tylko tło")
+                        $('#mode').text("Tylko tło");
                         break;
                     case 'B':
-                        $('#mode').text("Czarny ekran")
+                        $('#mode').text("Czarny ekran");
                         break;
                     case 'W':
-                        $('#mode').text("Biały ekran")
+                        $('#mode').text("Biały ekran");
                         break;
                     default:
-                        $('#mode').text("Nie znany tryb")
+                        $('#mode').text("Nie znany tryb");
                         break;
-                    }
-
-                    // On finish
-                    ffinish()
                 }
-                else {
-                    console.error( data, status, xhr )
-                    err_display()
-                }
+                // On finish
+                ffinish();
             }
-        ).fail(function(){ err_display(2) })
+            else {
+                console.error(data, status, xhr);
+                err_display();
+            }
+        }).fail(function () { err_display(2); });
     }
-
     /** Move by vect slide.
      * \param[in] vect - number of slide, vect>0 -> move down, vect<0 -> move up
      */
-    function move_slide( vect ){
-        $moved = $('#slide'+(Number($('.current').find('i').text())+vect))
-        $moved.addClass('moved')
-        return update_current( $('#slides-con'), function(){ $moved.removeClass('moved') })
+    function move_slide(vect) {
+        var $moved = $('#slide' + (Number($('.current').find('i').text()) + vect));
+        $moved.addClass('moved');
+        return update_current($('#slides-con'), function () { $moved.removeClass('moved'); });
     }
-
     /** Update list of slides. */
-    function update_list(){
-        $.get(
-            "http://"+IP_COMP+"/presentation/slide/list",
-            function( data, status, xhr ){
-
-                if( status == "success" ){
-                    $xml = $( $.parseXML( xhr.responseText ) )
-                    $listCon = $('#slides-con')
-                    $listCon.empty()
-
-                    $xml.find('response').children().each(function(){
-                        $row = $('<li></li>')
-
-                        $row.attr("id","slide"+$(this).attr('identifier'))
-                        $row.append( "<i>"+$(this).attr('identifier')+"</i>" )
-                        $row.append( "<b>"+$(this).attr('name')+"</b>" )
-
-                        type = $(this).attr('type')
-                        $row.addClass( type )
-                        $row.append( "<a>"+type+"</a>" )
-
-                        $listCon.append( $row )
-                    })
-
-                    update_current( $listCon );
-                }
-                else {
-                    console.error( data, status, xhr )
-                    err_display()
-                }
+    function update_list() {
+        $.get("http://" + IP_COMP + "/presentation/slide/list", function (data, status, xhr) {
+            if (status == "success") {
+                var $xml = $($.parseXML(xhr.responseText));
+                var $listCon_1 = $('#slides-con');
+                $listCon_1.empty();
+                $xml.find('response').children().each(function () {
+                    var $row = $('<li></li>');
+                    $row.attr("id", "slide" + $(this).attr('identifier'));
+                    $row.append("<i>" + $(this).attr('identifier') + "</i>");
+                    $row.append("<b>" + $(this).attr('name') + "</b>");
+                    var type = $(this).attr('type');
+                    $row.addClass(type);
+                    $row.append("<a>" + type + "</a>");
+                    $listCon_1.append($row);
+                });
+                update_current($listCon_1);
             }
-        ).fail(function(){ err_display(3) })
+            else {
+                console.error(data, status, xhr);
+                err_display();
+            }
+        }).fail(function () { err_display(3); });
     }
-
     /// Default loading list of slides
-    update_list()
-
+    update_list();
     ////------------------------------------
     /// Welcome panel
-    $('#ip-address').val( IP_COMP )
-
+    $('#ip-address').val(IP_COMP);
     /// Butt - Welcome
-    $('#butt-welcome').click(function(){
-        IP_COMP = $('#ip-address').val()
-
-        update_list()
-        $('#welcome').fadeOut('fast')
-    })
-
+    $('#butt-welcome').click(function () {
+        IP_COMP = $('#ip-address').val();
+        update_list();
+        $('#welcome').fadeOut('fast');
+    });
     ////------------------------------------
-    $('#slides-con').click(function(){ update_list(); update_current(); })
-
+    $('#slides-con').click(function () { update_list(); update_current(); });
     ////------------------------------------
     /// Butt - Extendent panel
-    $('#butt-ext').click(function(){
-        $('#ext-panel').toggle()
-    })
-
+    $('#butt-ext').click(function () {
+        $('#ext-panel').toggle();
+    });
     /// Butt - next
-    $('#butt-next').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/slide/next",
-                function(){ move_slide(1) } )
-    })
-
+    $('#butt-next').click(function () {
+        $.post("http://" + IP_COMP + "/presentation/slide/next", function () { move_slide(1); });
+    });
     /// Butt - previous
-    $('#butt-prev').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/slide/previous",
-                function(){ move_slide(-1) } )
-
-    })
-
+    $('#butt-prev').click(function () {
+        $.post("http://" + IP_COMP + "/presentation/slide/previous", function () { move_slide(-1); });
+    });
     /// Butt - normal mode
-    $('.butt-normal').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/normal",
-                function(){ update_current() } )
-    })
-
+    $('.butt-normal').click(function () {
+        $.post("http://" + IP_COMP + "/presentation/screen/normal", function () { update_current(); });
+    });
     /// Butt - freez mode
-    $('.butt-freeze').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/freeze",
-                function(){ update_current() } )
-    })
-
+    $('.butt-freeze').click(function () {
+        $.post("http://" + IP_COMP + "/presentation/screen/freeze", function () { update_current(); });
+    });
     /// Butt - black mode
-    $('.butt-black').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/black",
-                function(){ update_current() } )
-    })
-
+    $('.butt-black').click(function () {
+        $.post("http://" + IP_COMP + "/presentation/screen/black", function () { update_current(); });
+    });
     /// Butt - white mode
-    $('.butt-white').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/white",
-                function(){ update_current() } )
-    })
-
+    $('.butt-white').click(function () {
+        $.post("http://" + IP_COMP + "/presentation/screen/white", function () { update_current(); });
+    });
     /// Butt - background mode
-    $('.butt-background').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/hide",
-                function(){ update_current() } )
-    })
-
+    $('.butt-background').click(function () {
+        $.post("http://" + IP_COMP + "/presentation/screen/hide", function () { update_current(); });
+    });
     /// Butt - logo mode
-    $('.butt-logo').click(function(){
-        $.post( "http://"+IP_COMP+"/presentation/screen/logo",
-                function(){ update_current() } )
-    })
-
-})
+    $('.butt-logo').click(function () {
+        $.post("http://" + IP_COMP + "/presentation/screen/logo", function () { update_current(); });
+    });
+});

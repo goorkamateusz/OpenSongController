@@ -1,255 +1,283 @@
-/**
- * \brief CSS style of OpenSongController
- * \author Górka Mateusz (kzswieb.eu)
- * \copyright Copyright (c) 2020
- */
 /* general --------------- */
-body, html {
-    background-color:#000;
-    margin:0;
-    padding:0;
+body,
+html {
+    background-color: #000;
+    margin: 0;
+    padding: 0;
 }
+
 div {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 body div {
-    max-width:700px;
+    max-width: 700px;
 }
 
 /* text ------------------ */
-p, a, div, li, b, i, input {
-    color:#fff;
-    font-family:Arial, Helvetica, sans-serif;
+p,
+a,
+div,
+li,
+b,
+i,
+input {
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* main ------------------ */
 #main {
-    position:absolute;
-    top:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100%;
-    width:100%;
-    overflow:scroll;
-    overflow-y:scroll;
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    width: 100%;
+    overflow: scroll;
+    overflow-y: scroll;
 }
 
 #slides-con {
-    position:relative;
-    min-width:85%;
-    max-width:100%;
-    padding:60px 0px 160px 0px;
+    position: relative;
+    min-width: 85%;
+    max-width: 100%;
+    padding: 60px 0px 160px 0px;
 }
-#slides-con li {
-    width:100%;
-    height:16px;
-    margin:0px;
-    list-style-type:none;
-    vertical-align:center;
-}
-#slides-con li * {
-    display:inline-block;
-    min-width:22px;
-    max-height:16px;
-    margin:0px 1px;
-    vertical-align:center;
 
-    overflow:hidden;
-    font-size:12px;
+#slides-con li {
+    width: 100%;
+    height: 16px;
+    margin: 0px;
+    list-style-type: none;
+    vertical-align: center;
+}
+
+#slides-con li * {
+    display: inline-block;
+    min-width: 22px;
+    max-height: 16px;
+    margin: 0px 1px;
+    vertical-align: center;
+
+    overflow: hidden;
+    font-size: 12px;
 }
 
 .blank * {
-    color:#777;
+    color: #777;
 }
+
 .song b {
-    color:#18bc96;
+    color: #18bc96;
 }
+
 .scripture b {
-    color:#ea4949;
+    color: #ea4949;
 }
 
 #slides-con i {
-    border-right:2px solid #18bc96;
-}
-#slides-con b {
-    min-width:60%;
-    max-width:80%;
-    font-weight:600;
-    font-size:14px;
-}
-#slides-con a {
-    text-align:right;
-    float:right;
-    font-size:10px;
+    border-right: 2px solid #18bc96;
 }
 
-.current { background-color:#18bc96; }
-.moved { background-color:#ea4949; }
+#slides-con b {
+    min-width: 60%;
+    max-width: 80%;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+#slides-con a {
+    text-align: right;
+    float: right;
+    font-size: 10px;
+}
+
+.current {
+    background-color: #18bc96;
+}
+
+.moved {
+    background-color: #ea4949;
+}
+
 .current b,
-.moved b { color:#fff; }
+.moved b {
+    color: #fff;
+}
 
 /* buttons ------------------ */
 #butt-panel {
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    width:100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
 
-    background:linear-gradient(0deg,rgba(0,0,0,1),rgba(0,0,0,0.5));
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.5));
 }
 
 .ver-panel {
-    width:100%;
-    display:flex;
-    justify-content:space-around;
-    flex-direction:row;
-    align-items:center;
-    margin:5px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px 0px;
 }
 
 #ext-panel {
-    margin:20px;
-    padding:10px;
-    border-radius:5px;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 5px;
 
-    background-color:rgba(234,74,74,0.6);
+    background-color: rgba(234, 74, 74, 0.6);
 }
 
 #mode {
-    margin:0px auto;
-    padding:0;
-    font-size:10px;
-    font-weight:600;
+    margin: 0px auto;
+    padding: 0;
+    font-size: 10px;
+    font-weight: 600;
 }
 
 .button {
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    border-radius:4px;
-    cursor:pointer;
+    border-radius: 4px;
+    cursor: pointer;
 }
+
 .button * {
-    display:flex;
+    display: flex;
 }
+
 .button img {
-    max-height:40px;
+    max-height: 40px;
 }
 
 .button:active {
-    background-color:#fff;
+    background-color: #fff;
 }
 
 .button {
-    min-height:40px;
-    max-height:40px;
-    width:20%;
+    min-height: 40px;
+    max-height: 40px;
+    width: 20%;
 
-    background-color:#08225c;
+    background-color: #08225c;
 }
+
 .b-mid {
-    min-height:50px;
-    max-height:50px;
-    width:20%;
+    min-height: 50px;
+    max-height: 50px;
+    width: 20%;
 
 }
+
 .b-big {
-    min-height:50px;
-    max-height:50px;
-    width:30%;
+    min-height: 50px;
+    max-height: 50px;
+    width: 30%;
 
-    background-color:#18bc96;
+    background-color: #18bc96;
 }
+
 .b-wide {
-    min-height:40px;
-    max-height:40px;
-    width:50%;
-    background-color:#ea4949;
+    min-height: 40px;
+    max-height: 40px;
+    width: 50%;
+    background-color: #ea4949;
 }
 
 .b-list {
-    display:flex;
-    width:100%;
-    align-items:center;
+    display: flex;
+    width: 100%;
+    align-items: center;
 }
+
 .b-list img {
-    margin:3px;
-    width:30px;
-    height:30px;
+    margin: 3px;
+    width: 30px;
+    height: 30px;
 }
+
 .b-list a {
-    margin-left:5px;
+    margin-left: 5px;
 }
+
 .b-list:active {
-    background-color:#18bc96
+    background-color: #18bc96
 }
 
 /* welcome ---------------- */
 #welcome {
-    position:fixed;
-    bottom:0;
-    top:0;
-    left:0;
-    right:0;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    min-height:100%;
+    position: fixed;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100%;
 
-    background-color:rgba(0,0,0,0.8)
+    background-color: rgba(0, 0, 0, 0.8)
 }
 
 #welcome div {
-    margin:8px auto;
-    text-align:center;
-    min-width:70%;
-    max-width:95%;
+    margin: 8px auto;
+    text-align: center;
+    min-width: 70%;
+    max-width: 95%;
 }
+
 #welcome * a {
-    display:block;
-    margin:2px auto;
-    font-size:14px;
-    text-align:center;
+    display: block;
+    margin: 2px auto;
+    font-size: 14px;
+    text-align: center;
 }
 
 #welcome .title {
-    margin-bottom:10px;
+    margin-bottom: 10px;
 }
+
 #welcome .title a {
-    font-size:20px;
-    font-weight:600;
-    color:#18bc96;
+    font-size: 20px;
+    font-weight: 600;
+    color: #18bc96;
 }
+
 #welcome .title img {
-    display:block;
-    width:100px;
-    margin:10px auto;
-    margin:10px auto;
-    border-radius:50px;
+    display: block;
+    width: 100px;
+    margin: 10px auto;
+    margin: 10px auto;
+    border-radius: 50px;
 }
 
 input[type="text"] {
-    background-color:#000;
-    border:1px soild #fff;
-    color:#fff;
-    text-align:center;
-    font-size:16px;
+    background-color: #000;
+    border: 1px soild #fff;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
 }
 
 #welcome .author a {
-    margin:0px auto;
+    margin: 0px auto;
 }
 
 #welcome .error {
-    display:none;
-    background-color:#f11;
-    color:#000;
-    font-weight:600;
-    border-radius:5px;
+    display: none;
+    background-color: #f11;
+    color: #000;
+    font-weight: 600;
+    border-radius: 5px;
 }

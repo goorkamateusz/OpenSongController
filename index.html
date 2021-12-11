@@ -6,8 +6,35 @@
    <meta name="Author" content="Gorka Mateusz">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="Stylesheet" type="text/css" href="css/main.css"/>
+   <script src="js/jquery.js"></script>
+   <script src="js/main.js"></script>
 </head>
 <body>
+    <div id="welcome">
+        <div class="title">
+            <img src="img/applogo.svg"/>
+            <a> OpenSongController </a>
+        </div>
+
+        <div>
+            <a>Adres IP komputera<br/>i port API programu OpenSong</a>
+            <input type="text" id="ip-address"/>
+            <a href="">Dowiedz się więcej...</a>
+        </div>
+
+        <div class="button b-wide" id="butt-welcome">Uruchom</div>
+
+        <div id="error1" class="error">Coś poszło nie tak...<br/>Błąd odpowiedzi</div>
+        <div id="error2" class="error">Coś poszło nie tak...<br/>Błąd komunikacji</div>
+        <div id="error3" class="error">Coś poszło nie tak...<br/>Błąd komunikacji.<br/>Sprawdź port i adres IP</div>
+
+        <div class="author">
+            <a>Created by</a>
+            <a>Górka Mateusz</a>
+            <a href="kzswieb.eu">kzswieb.eu</a>
+        </div>
+    </div>
+
     <div id="main">
         <div id="slides-preview">
             <!-- TODO preview -->
@@ -58,34 +85,6 @@
             <div class="button b-mid butt-freeze"><img src="img/freeze.svg"/></div>
             <div class="button b-big" id="butt-next"><img src="img/next.svg"/></div>
         </div>
-
     </div>
-
-    <div id="welcome">
-        <div class="title">
-            <img src="img/applogo.svg"/>
-            <a> OpenSongController </a>
-        </div>
-
-        <div>
-            <a>IP adres komputera<br/>i port sieciowy programu OpenSong</a>
-            <input type="text" id="ip-address"/>
-        </div>
-
-        <div class="button b-wide" id="butt-welcome">Uruchom</div>
-
-        <div id="error1" class="error">ERROR (1)<br/>Błąd odpowiedzi!</div>
-        <div id="error2" class="error">ERROR (2)<br/>Błąd komunikacji!</div>
-        <div id="error3" class="error">ERROR (3)<br/>Błąd komunikacji!<br/>Sprawdź IP adres!</div>
-
-        <div class="author">
-            <a>Created by</a>
-            <a>Górka Mateusz</a>
-            <a href="kzswieb.eu">kzswieb.eu</a>
-        </div>
-    </div>
-
-    <script src="js/jquery.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>

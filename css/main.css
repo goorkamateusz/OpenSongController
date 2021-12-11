@@ -218,6 +218,7 @@ input {
 /* welcome ---------------- */
 #welcome {
     position: fixed;
+    z-index: 999;
     bottom: 0;
     top: 0;
     left: 0;
@@ -228,7 +229,7 @@ input {
     flex-direction: column;
     min-height: 100%;
 
-    background-color: rgba(0, 0, 0, 0.8)
+    background-color: rgba(0, 0, 0, 0.85)
 }
 
 #welcome div {

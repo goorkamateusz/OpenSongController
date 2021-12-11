@@ -2,81 +2,98 @@
 /// IP adress of OpenSong computer
 var IP_COMP = '192.168.8.113:8080'
 
-$(document).ready(function () {
-    /// Default loading list of slides
-    updateList()
+interface ButtonConfig {
+    selector: string,
+    action: any
+}
 
-    ////------------------------------------
-    /// Welcome panel
+const BUTTONS: Array<ButtonConfig> = [
+    {
+        /// Butt - Welcome
+        selector: '#butt-welcome',
+        action: () => {
+            IP_COMP = $('#ip-address').val() as string
+            updateList()
+            $('#welcome').fadeOut('fast')
+        }
+    },
+    {
+        selector: '#slides-con',
+        action: () => {
+            updateList();
+            updateStatus()
+        }
+    },
+    {
+        /// Butt - Extendent panel
+        selector: '#butt-ext',
+        action: () => { $('#ext-panel').toggle() }
+    },
+    {
+        /// Butt - next
+        selector: '#butt-next',
+        action: () => {
+            $.post("http://" + IP_COMP + "/presentation/slide/next", () => { changeSlide(1) })
+        }
+    },
+    {
+        /// Butt - previous
+        selector: '#butt-prev',
+        action: () => {
+            $.post("http://" + IP_COMP + "/presentation/slide/previous", () => { changeSlide(-1) })
+        }
+    },
+    {
+        /// Butt - normal mode
+        selector: '.butt-normal',
+        action: () => {
+            $.post("http://" + IP_COMP + "/presentation/screen/normal", () => updateStatus())
+        }
+    },
+    {
+        /// Butt - freez mode
+        selector: '.butt-freeze',
+        action: () => {
+            $.post("http://" + IP_COMP + "/presentation/screen/freeze", () => updateStatus())
+        }
+    },
+    {
+        /// Butt - black mode
+        selector: '.butt-black',
+        action: () => {
+            $.post("http://" + IP_COMP + "/presentation/screen/black", () => updateStatus())
+        }
+    },
+    {
+        /// Butt - white mode
+        selector: '.butt-white',
+        action: () => {
+            $.post("http://" + IP_COMP + "/presentation/screen/white", () => updateStatus())
+        }
+    },
+    {
+        /// Butt - background mode
+        selector: '.butt-background',
+        action: () => {
+            $.post("http://" + IP_COMP + "/presentation/screen/hide", () => updateStatus())
+        }
+    },
+    {
+        /// Butt - logo mode
+        selector: '.butt-logo',
+        action: () => {
+            $.post("http://" + IP_COMP + "/presentation/screen/logo", () => updateStatus())
+        }
+    }
+]
+
+$(document).ready(function () {
     $('#ip-address').val(IP_COMP)
 
-    /// Butt - Welcome
-    $('#butt-welcome').click(() => {
-        IP_COMP = $('#ip-address').val() as string
+    for (const button of BUTTONS)
+        $(button.selector).click(button.action)
 
-        updateList()
-        $('#welcome').fadeOut('fast')
-    })
-
-    ////------------------------------------
-    $('#slides-con').click(() => {
-        updateList();
-        updateStatus()
-    })
-
-    ////------------------------------------
-    /// Butt - Extendent panel
-    $('#butt-ext').click(function () {
-        $('#ext-panel').toggle()
-    })
-
-    /// Butt - next
-    $('#butt-next').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/slide/next",
-            function () { changeSlide(1) })
-    })
-
-    /// Butt - previous
-    $('#butt-prev').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/slide/previous",
-            function () { changeSlide(-1) })
-    })
-
-    /// Butt - normal mode
-    $('.butt-normal').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/normal",
-            function () { updateStatus() })
-    })
-
-    /// Butt - freez mode
-    $('.butt-freeze').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/freeze",
-            function () { updateStatus() })
-    })
-
-    /// Butt - black mode
-    $('.butt-black').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/black",
-            function () { updateStatus() })
-    })
-
-    /// Butt - white mode
-    $('.butt-white').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/white",
-            function () { updateStatus() })
-    })
-
-    /// Butt - background mode
-    $('.butt-background').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/hide",
-            function () { updateStatus() })
-    })
-
-    /// Butt - logo mode
-    $('.butt-logo').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/logo",
-            function () { updateStatus() })
-    })
+    updateList()
 })
 
 function displayError(err = 1) {
@@ -132,10 +149,10 @@ function changeSlide(slideMove: number) {
 function updateList() {
     $.get(
         `http://${IP_COMP}/presentation/slide/list`,
-        function (data, status, xhr): void {
+        (data, status, xhr) => {
             if (status == "success") {
                 setSlidesListView(xhr)
-                updateStatus();
+                updateStatus()
             }
             else {
                 console.error(data, status, xhr)

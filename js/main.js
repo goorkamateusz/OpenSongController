@@ -1,60 +1,92 @@
 //! Aplication config
 /// IP adress of OpenSong computer
 var IP_COMP = '192.168.8.113:8080';
+var BUTTONS = [
+    {
+        /// Butt - Welcome
+        selector: '#butt-welcome',
+        action: function () {
+            IP_COMP = $('#ip-address').val();
+            updateList();
+            $('#welcome').fadeOut('fast');
+        }
+    },
+    {
+        selector: '#slides-con',
+        action: function () {
+            updateList();
+            updateStatus();
+        }
+    },
+    {
+        /// Butt - Extendent panel
+        selector: '#butt-ext',
+        action: function () { $('#ext-panel').toggle(); }
+    },
+    {
+        /// Butt - next
+        selector: '#butt-next',
+        action: function () {
+            $.post("http://" + IP_COMP + "/presentation/slide/next", function () { changeSlide(1); });
+        }
+    },
+    {
+        /// Butt - previous
+        selector: '#butt-prev',
+        action: function () {
+            $.post("http://" + IP_COMP + "/presentation/slide/previous", function () { changeSlide(-1); });
+        }
+    },
+    {
+        /// Butt - normal mode
+        selector: '.butt-normal',
+        action: function () {
+            $.post("http://" + IP_COMP + "/presentation/screen/normal", function () { return updateStatus(); });
+        }
+    },
+    {
+        /// Butt - freez mode
+        selector: '.butt-freeze',
+        action: function () {
+            $.post("http://" + IP_COMP + "/presentation/screen/freeze", function () { return updateStatus(); });
+        }
+    },
+    {
+        /// Butt - black mode
+        selector: '.butt-black',
+        action: function () {
+            $.post("http://" + IP_COMP + "/presentation/screen/black", function () { return updateStatus(); });
+        }
+    },
+    {
+        /// Butt - white mode
+        selector: '.butt-white',
+        action: function () {
+            $.post("http://" + IP_COMP + "/presentation/screen/white", function () { return updateStatus(); });
+        }
+    },
+    {
+        /// Butt - background mode
+        selector: '.butt-background',
+        action: function () {
+            $.post("http://" + IP_COMP + "/presentation/screen/hide", function () { return updateStatus(); });
+        }
+    },
+    {
+        /// Butt - logo mode
+        selector: '.butt-logo',
+        action: function () {
+            $.post("http://" + IP_COMP + "/presentation/screen/logo", function () { return updateStatus(); });
+        }
+    }
+];
 $(document).ready(function () {
-    /// Default loading list of slides
-    updateList();
-    ////------------------------------------
-    /// Welcome panel
     $('#ip-address').val(IP_COMP);
-    /// Butt - Welcome
-    $('#butt-welcome').click(function () {
-        IP_COMP = $('#ip-address').val();
-        updateList();
-        $('#welcome').fadeOut('fast');
-    });
-    ////------------------------------------
-    $('#slides-con').click(function () {
-        updateList();
-        updateStatus();
-    });
-    ////------------------------------------
-    /// Butt - Extendent panel
-    $('#butt-ext').click(function () {
-        $('#ext-panel').toggle();
-    });
-    /// Butt - next
-    $('#butt-next').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/slide/next", function () { changeSlide(1); });
-    });
-    /// Butt - previous
-    $('#butt-prev').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/slide/previous", function () { changeSlide(-1); });
-    });
-    /// Butt - normal mode
-    $('.butt-normal').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/normal", function () { updateStatus(); });
-    });
-    /// Butt - freez mode
-    $('.butt-freeze').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/freeze", function () { updateStatus(); });
-    });
-    /// Butt - black mode
-    $('.butt-black').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/black", function () { updateStatus(); });
-    });
-    /// Butt - white mode
-    $('.butt-white').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/white", function () { updateStatus(); });
-    });
-    /// Butt - background mode
-    $('.butt-background').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/hide", function () { updateStatus(); });
-    });
-    /// Butt - logo mode
-    $('.butt-logo').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/logo", function () { updateStatus(); });
-    });
+    for (var _i = 0, BUTTONS_1 = BUTTONS; _i < BUTTONS_1.length; _i++) {
+        var button = BUTTONS_1[_i];
+        $(button.selector).click(button.action);
+    }
+    updateList();
 });
 function displayError(err) {
     if (err === void 0) { err = 1; }

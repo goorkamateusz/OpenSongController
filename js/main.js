@@ -16,10 +16,10 @@ class APIProvider {
     success_control(onSuccess) {
         return (data, status, xhr) => {
             if (status == "success") {
-                onSuccess(xhr, status, data);
+                onSuccess(data, status, xhr);
             }
             else {
-                console.error(xhr, status, data);
+                console.error(data, status, xhr);
                 displayError();
             }
         };

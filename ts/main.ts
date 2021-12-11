@@ -19,10 +19,10 @@ class APIProvider {
     private success_control(onSuccess: any) {
         return (data: any, status: string, xhr: JQuery.jqXHR<any>): void => {
             if (status == "success") {
-                onSuccess(xhr, status, data)
+                onSuccess(data, status, xhr)
             }
             else {
-                console.error(xhr, status, data)
+                console.error(data, status, xhr)
                 displayError()
             }
         }

@@ -1,7 +1,6 @@
 //! Aplication config
 /// IP adress of OpenSong computer
 var IP_COMP = '192.168.8.113:8080';
-var $currentSlide = undefined;
 $(document).ready(function () {
     /// Default loading list of slides
     updateList();
@@ -17,7 +16,7 @@ $(document).ready(function () {
     ////------------------------------------
     $('#slides-con').click(function () {
         updateList();
-        updateCurrent();
+        updateStatus();
     });
     ////------------------------------------
     /// Butt - Extendent panel
@@ -34,27 +33,27 @@ $(document).ready(function () {
     });
     /// Butt - normal mode
     $('.butt-normal').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/normal", function () { updateCurrent(); });
+        $.post("http://" + IP_COMP + "/presentation/screen/normal", function () { updateStatus(); });
     });
     /// Butt - freez mode
     $('.butt-freeze').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/freeze", function () { updateCurrent(); });
+        $.post("http://" + IP_COMP + "/presentation/screen/freeze", function () { updateStatus(); });
     });
     /// Butt - black mode
     $('.butt-black').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/black", function () { updateCurrent(); });
+        $.post("http://" + IP_COMP + "/presentation/screen/black", function () { updateStatus(); });
     });
     /// Butt - white mode
     $('.butt-white').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/white", function () { updateCurrent(); });
+        $.post("http://" + IP_COMP + "/presentation/screen/white", function () { updateStatus(); });
     });
     /// Butt - background mode
     $('.butt-background').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/hide", function () { updateCurrent(); });
+        $.post("http://" + IP_COMP + "/presentation/screen/hide", function () { updateStatus(); });
     });
     /// Butt - logo mode
     $('.butt-logo').click(function () {
-        $.post("http://" + IP_COMP + "/presentation/screen/logo", function () { updateCurrent(); });
+        $.post("http://" + IP_COMP + "/presentation/screen/logo", function () { updateStatus(); });
     });
 });
 /** Show communicat about error. */
@@ -63,47 +62,12 @@ function displayError(err) {
     $('#error' + err).show();
     $('#welcome').fadeIn(1000);
 }
-/** Select a current slide on list.
- * \param[in] $listCon - jQuery object of #slides-con
- * \param[in] ffinish - function to do after select.
- */
-function updateCurrent($listCon, onFinish) {
-    if ($listCon === void 0) { $listCon = $('#slides-con'); }
-    if (onFinish === void 0) { onFinish = function () { }; }
-    $.get("http://" + IP_COMP + "/presentation/status", function (data, status, xhr) {
+function updateStatus(onSuccess) {
+    if (onSuccess === void 0) { onSuccess = function () { }; }
+    $.get("http://".concat(IP_COMP, "/presentation/status"), function (data, status, xhr) {
         if (status == "success") {
-            var $xml = $($.parseXML(xhr.responseText));
-            // Current slide
-            if ($currentSlide)
-                $currentSlide.removeClass('current');
-            $currentSlide = $listCon.find("#slide" + $xml.find('slide').attr('itemnumber'));
-            $currentSlide.addClass('current');
-            // On mode
-            var mode = $xml.find('screen').attr('mode');
-            switch (mode) {
-                case 'N':
-                    $('#mode').text("");
-                    break;
-                case 'F':
-                    $('#mode').text("Zamrożony ekran");
-                    break;
-                case 'L':
-                    $('#mode').text("Wyświetla logo");
-                    break;
-                case 'H':
-                    $('#mode').text("Tylko tło");
-                    break;
-                case 'B':
-                    $('#mode').text("Czarny ekran");
-                    break;
-                case 'W':
-                    $('#mode').text("Biały ekran");
-                    break;
-                default:
-                    $('#mode').text("Nie znany tryb");
-                    break;
-            }
-            onFinish();
+            setStatusView(xhr);
+            onSuccess();
         }
         else {
             console.error(data, status, xhr);
@@ -111,13 +75,32 @@ function updateCurrent($listCon, onFinish) {
         }
     }).fail(function () { displayError(2); });
 }
+function setStatusView(xhr) {
+    var $xml = $($.parseXML(xhr.responseText));
+    var itemNumber = $xml.find('slide').attr('itemnumber');
+    var mode = $xml.find('screen').attr('mode');
+    $('.current').removeClass('current');
+    $('#slides-con').find("#slide" + itemNumber).addClass('current');
+    $('#mode').text(getStatusDescription(mode));
+}
+function getStatusDescription(mode) {
+    switch (mode) {
+        case 'N': return "";
+        case 'F': return "Zamrożony ekran";
+        case 'L': return "Wyświetla logo";
+        case 'H': return "Tylko tło";
+        case 'B': return "Czarny ekran";
+        case 'W': return "Biały ekran";
+    }
+    return "Nie znany tryb";
+}
 /** Move by vect slide.
  * \param[in] vect - number of slide, vect>0 -> move down, vect<0 -> move up
  */
 function moveSlide(vect) {
     var $moved = $('#slide' + (Number($('.current').find('i').text()) + vect));
     $moved.addClass('moved');
-    return updateCurrent($('#slides-con'), function () { $moved.removeClass('moved'); });
+    return updateStatus(function () { $moved.removeClass('moved'); });
 }
 /** Update list of slides. */
 function updateList() {
@@ -136,7 +119,7 @@ function updateList() {
                 $row.append("<a>" + type + "</a>");
                 $listCon_1.append($row);
             });
-            updateCurrent($listCon_1);
+            updateStatus();
         }
         else {
             console.error(data, status, xhr);

@@ -2,8 +2,6 @@
 /// IP adress of OpenSong computer
 var IP_COMP = '192.168.8.113:8080'
 
-var $currentSlide = undefined
-
 $(document).ready(function () {
     /// Default loading list of slides
     updateList()
@@ -23,7 +21,7 @@ $(document).ready(function () {
     ////------------------------------------
     $('#slides-con').click(() => {
         updateList();
-        updateCurrent()
+        updateStatus()
     })
 
     ////------------------------------------
@@ -47,37 +45,37 @@ $(document).ready(function () {
     /// Butt - normal mode
     $('.butt-normal').click(function () {
         $.post("http://" + IP_COMP + "/presentation/screen/normal",
-            function () { updateCurrent() })
+            function () { updateStatus() })
     })
 
     /// Butt - freez mode
     $('.butt-freeze').click(function () {
         $.post("http://" + IP_COMP + "/presentation/screen/freeze",
-            function () { updateCurrent() })
+            function () { updateStatus() })
     })
 
     /// Butt - black mode
     $('.butt-black').click(function () {
         $.post("http://" + IP_COMP + "/presentation/screen/black",
-            function () { updateCurrent() })
+            function () { updateStatus() })
     })
 
     /// Butt - white mode
     $('.butt-white').click(function () {
         $.post("http://" + IP_COMP + "/presentation/screen/white",
-            function () { updateCurrent() })
+            function () { updateStatus() })
     })
 
     /// Butt - background mode
     $('.butt-background').click(function () {
         $.post("http://" + IP_COMP + "/presentation/screen/hide",
-            function () { updateCurrent() })
+            function () { updateStatus() })
     })
 
     /// Butt - logo mode
     $('.butt-logo').click(function () {
         $.post("http://" + IP_COMP + "/presentation/screen/logo",
-            function () { updateCurrent() })
+            function () { updateStatus() })
     })
 })
 
@@ -87,50 +85,13 @@ function displayError(err = 1) {
     $('#welcome').fadeIn(1000)
 }
 
-/** Select a current slide on list.
- * \param[in] $listCon - jQuery object of #slides-con
- * \param[in] ffinish - function to do after select.
- */
-function updateCurrent($listCon = $('#slides-con'), onFinish = () => { }) {
+function updateStatus(onSuccess = () => { }) {
     $.get(
-        "http://" + IP_COMP + "/presentation/status",
+        `http://${IP_COMP}/presentation/status`,
         (data, status, xhr) => {
             if (status == "success") {
-                let $xml = $($.parseXML(xhr.responseText))
-
-                // Current slide
-                if ($currentSlide)
-                    $currentSlide.removeClass('current')
-                $currentSlide = $listCon.find("#slide" + $xml.find('slide').attr('itemnumber'))
-                $currentSlide.addClass('current')
-
-                // On mode
-                var mode = $xml.find('screen').attr('mode')
-                switch (mode) {
-                    case 'N':
-                        $('#mode').text("")
-                        break
-                    case 'F':
-                        $('#mode').text("Zamrożony ekran")
-                        break
-                    case 'L':
-                        $('#mode').text("Wyświetla logo")
-                        break
-                    case 'H':
-                        $('#mode').text("Tylko tło")
-                        break
-                    case 'B':
-                        $('#mode').text("Czarny ekran")
-                        break
-                    case 'W':
-                        $('#mode').text("Biały ekran")
-                        break
-                    default:
-                        $('#mode').text("Nie znany tryb")
-                        break
-                }
-
-                onFinish()
+                setStatusView(xhr)
+                onSuccess()
             }
             else {
                 console.error(data, status, xhr)
@@ -140,13 +101,35 @@ function updateCurrent($listCon = $('#slides-con'), onFinish = () => { }) {
     ).fail(() => { displayError(2) })
 }
 
+function setStatusView(xhr: JQuery.jqXHR<any>): void {
+    const $xml = $($.parseXML(xhr.responseText))
+    const itemNumber = $xml.find('slide').attr('itemnumber')
+    const mode = $xml.find('screen').attr('mode')
+
+    $('.current').removeClass('current')
+    $('#slides-con').find("#slide" + itemNumber).addClass('current')
+    $('#mode').text(getStatusDescription(mode))
+}
+
+function getStatusDescription(mode: string): string {
+    switch (mode) {
+        case 'N': return ""
+        case 'F': return "Zamrożony ekran"
+        case 'L': return "Wyświetla logo"
+        case 'H': return "Tylko tło"
+        case 'B': return "Czarny ekran"
+        case 'W': return "Biały ekran"
+    }
+    return "Nie znany tryb"
+}
+
 /** Move by vect slide.
  * \param[in] vect - number of slide, vect>0 -> move down, vect<0 -> move up
  */
 function moveSlide(vect) {
     let $moved = $('#slide' + (Number($('.current').find('i').text()) + vect))
     $moved.addClass('moved')
-    return updateCurrent($('#slides-con'), () => { $moved.removeClass('moved') })
+    return updateStatus(() => { $moved.removeClass('moved') })
 }
 
 /** Update list of slides. */
@@ -174,7 +157,7 @@ function updateList() {
                     $listCon.append($row)
                 })
 
-                updateCurrent($listCon);
+                updateStatus();
             }
             else {
                 console.error(data, status, xhr)
